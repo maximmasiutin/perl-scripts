@@ -12,6 +12,7 @@ This tool compares two test output files to identify which tests changed status 
 - **Cross-browser compatibility testing** (Chrome vs Firefox vs Safari)
 - **Browser version regression testing** (New Chrome vs Old Chrome)
 - **Web framework validation** across different browser engines
+- **Sencha ExtJS testing with Playwright** across multiple toolkits and browsers
 
 ## Features
 
@@ -137,6 +138,15 @@ module.exports = EmojiReporter;
 - **Test Strategy Development**: Show the importance of cross-browser testing with real examples
 - **Debugging Workshops**: Use diff results to teach browser-specific debugging techniques
 
+### Sencha ExtJS Framework Development
+- **Toolkit Comparison Testing**: Compare Sencha Classic vs Modern toolkit behavior across browsers using Playwright
+- **SDK Version Validation**: Test Sencha SDK updates to ensure backward compatibility across all supported browsers
+- **Component Library Testing**: Validate Sencha UI components (grids, forms, charts) work consistently in Chromium, Firefox, and WebKit
+- **Cross-Browser ExtJS Validation**: Ensure Sencha applications render and function correctly across all browser engines
+- **Sencha Upgrade Testing**: Compare test results before and after Sencha framework upgrades to identify breaking changes
+- **Multi-Toolkit Regression Detection**: Identify when changes to Classic toolkit affect Modern toolkit or vice versa
+- **Browser-Specific Sencha Issues**: Quickly isolate which Sencha components have browser-specific rendering or functionality issues
+
 ## Real-World Examples
 
 ### Example 1: React Component Library Testing
@@ -187,6 +197,45 @@ perl compare-test-results.pl firefox-$LAST_BUILD_ID.txt firefox-$BUILD_ID.txt
 
 # Fail build if regressions detected
 if [ -f chrome-$BUILD_ID.txt.out ]; then exit 1; fi
+```
+
+### Example 5: Sencha ExtJS Framework Testing with Playwright
+```bash
+# Test Sencha ExtJS Classic toolkit across browsers
+node run-tests.js -show-pass true -sdk-url "http://127.0.0.1:1842/" \
+  -toolkits classic -browsers chromium > sencha-classic-chrome.txt
+
+node run-tests.js -show-pass true -sdk-url "http://127.0.0.1:1842/" \
+  -toolkits classic -browsers firefox > sencha-classic-firefox.txt
+
+node run-tests.js -show-pass true -sdk-url "http://127.0.0.1:1842/" \
+  -toolkits classic -browsers webkit > sencha-classic-safari.txt
+
+# Compare Classic toolkit results across browsers
+perl compare-test-results.pl sencha-classic-chrome.txt sencha-classic-firefox.txt
+perl compare-test-results.pl sencha-classic-chrome.txt sencha-classic-safari.txt
+
+# Test Modern toolkit and compare with Classic
+node run-tests.js -show-pass true -sdk-url "http://127.0.0.1:1842/" \
+  -toolkits modern -browsers chromium > sencha-modern-chrome.txt
+
+# Compare Modern vs Classic to find toolkit-specific issues
+perl compare-test-results.pl sencha-classic-chrome.txt sencha-modern-chrome.txt
+```
+
+### Example 6: Sencha SDK Multi-Toolkit Cross-Browser Validation
+```bash
+# Run comprehensive Sencha tests across all toolkits and browsers
+node run-tests.js -show-pass true -sdk-url "http://127.0.0.1:1842/" \
+  -toolkits classic,modern -browsers chromium,firefox,webkit > sencha-all.txt
+
+# After SDK updates, run again and compare
+node run-tests.js -show-pass true -sdk-url "http://127.0.0.1:1842/" \
+  -toolkits classic,modern -browsers chromium,firefox,webkit > sencha-updated.txt
+
+perl compare-test-results.pl sencha-all.txt sencha-updated.txt
+
+# Identify which Sencha components broke after SDK update
 ```
 
 ## How It Works

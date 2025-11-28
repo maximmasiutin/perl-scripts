@@ -1,5 +1,29 @@
 #!/usr/bin/env perl
 
+# Playwright Cross-Browser Test Comparison Tool
+#
+# Compares test results from Playwright test runs to identify differences
+# between browsers, browser versions, or test configurations.
+#
+# Designed for analyzing:
+# - Cross-browser compatibility testing (Chromium, Firefox, WebKit)
+# - Sencha ExtJS framework testing with Playwright across toolkits (Classic, Modern)
+# - Browser version regression detection
+# - Web framework validation across different browser engines
+#
+# Usage: perl compare-test-results.pl <first_file> <second_file>
+#
+# Example Sencha scenarios:
+#   Compare Classic vs Modern toolkit:
+#     node run-tests.js -toolkits classic -browsers chromium > classic.txt
+#     node run-tests.js -toolkits modern -browsers chromium > modern.txt
+#     perl compare-test-results.pl classic.txt modern.txt
+#
+#   Compare Chromium vs Firefox for Sencha SDK:
+#     node run-tests.js -toolkits classic -browsers chromium > chrome.txt
+#     node run-tests.js -toolkits classic -browsers firefox > firefox.txt
+#     perl compare-test-results.pl chrome.txt firefox.txt
+
 use strict;
 use warnings;
 use utf8;
